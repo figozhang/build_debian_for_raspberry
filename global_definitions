@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# Compilation-related Variables
+
+ARCH=${ARCH=arm64}
+CROSS_COMPILE=${CROSS_COMPILE=aarch64-linux-gnu-}
+
+BUILD_PATH=${BUILD_PATH=$(dirname $0)/../build}
+DIST_PATH=${DIST_PATH=$(dirname $0)/../dist}
+
+# Wrapped for Unix-style Makefile in linux
+# Now you are at $BUILD_PATH/linux
+INSTALL_PATH=../kernel_dist
+INSTALL_MOD_PATH=../kernel_dist
+INSTALL_HDR_PATH=../kernel_dist/usr/
+
+# The ralative path
+KERNEL_DIST_PATH=$BUILD_PATH/kernel_dist
+
+LINUX_BRANCH=${LINUX_BRANCH="rpi-4.14.y"}
+
+FETCH_METHOD=${FETCH_METHOD="wget"}
+GIT_PROTOCOL="git://"
+
+GIT_COMMAND="clone"
+GITCLONE_ARGS=""
+
+# Debootstrap Variables
+
+ROOT_PATH=${ROOT_PATH=$DIST_PATH/rootfs/}
+BOOT_PATH=${BOOT_PATH=$DIST_PATH/boot/}
+mkdir -p $ROOT_PATH
+mkdir -p $BOOT_PATH
+
+SUITE=${SUITE="stable"}
+DEB_ARCH=${ARCH-arm64}
+MIRROR=${MIRROR="http://httpredir.debian.org/debian/"}
+
+# Detect available debootstrap file
+if [ ! $DEBOOTSTRAP_BIN ]; then 
+    if [ "$(which cdebootstrap)" != "" ]; then
+        DEBOOTSTRAP_BIN=$(which cdebootstrap);
+    elif [ "$(which cdebootstrap-static)" != "" ]; then
+        DEBOOTSTRAP_BIN=$(which cdebootstrap-static);
+    elif [ "$(which debootstrap)" != "" ]; then
+        DEBOOTSTRAP_BIN=$(which debootstrap);
+    fi
+fi
+
+# Allow you to run 32-bit ARM dynamically linked binaries 
+
+LIBC_ARMHF=libc6:armhf
+LIBC_ARMEL=libc6:armel
+
+# rpi-firmware related
+FW_BOOTCODE="bootcode.bin "
+FW_START="start.elf start_x.elf start_cd.elf start_db.elf "
+FW_FIXUP="fixup.dat fixup_x.dat fixup_cd.dat fixup_db.dat "
+FW_LICENSE="COPYING.linux LICENCE.broadcom "
+
+FW_BOOT=${FW_BOOTCODE}${FW_START}${FW_FIXUP}${FW_LICENSE}
+
+
+# Pre-Compilation Variables
+
+# This includes some fixes, along with a downstream mmc driver
+# For more details see
+# bcm2835-v4l2: https://github.com/raspberrypi/linux/issues/2117
+# MMC issue: https://github.com/raspberrypi/linux/issues/2124
+BCMRPI3_CONFFILE=$(dirname $0)/../stage1/bcmrpi3_config
+
+# For more details see issue https://github.com/raspberrypi/linux/issues/2136
+THERMAL_PATCH_FILE=$(dirname $0)/../stage1/thermal_patch
+THERMAL_PATCH_DEST=$BUILD_PATH/linux/drivers/thermal/Kconfig
+
+# Filesystem type
+FSTYPE=${FSTYPE-btrfs}
