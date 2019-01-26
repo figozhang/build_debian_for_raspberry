@@ -17,11 +17,11 @@ POSTRUN_SCRIPTS=""
 GENERATE_IMAGE=1
 
 # Set hostname
-HOSTNAME=raspberrypi
+HOSTNAME=benshushu
 
 # Image file configuration
-IMGFILE="dist/RPi-arm64-dist.img"
-IMGSIZE_MB=1024
+IMGFILE="dist/debian-arm64-rpi3-benshushu.img"
+IMGSIZE_MB=2048
 BOOT_SIZE="100MiB"
 
 # Filesystem type
@@ -41,7 +41,7 @@ FETCH_METHOD="wget"
 
 # Stage 2: Variables for debootstrap
  
-SUITE="stable"
+SUITE="unstable"
 DEB_ARCH=arm64
 DEB_INCLUDE="" 
 MIRROR="http://httpredir.debian.org/debian/"
@@ -74,20 +74,20 @@ INSTALL_VC_SDK=1
 INSTALL_VC64=0
 
 # Stage 4
-NEW_USER=pi
-PASSWORD_USER=raspberry
+NEW_USER=benshushu
+PASSWORD_USER=123
 
-PASSWORD_ROOT=raspberry
+PASSWORD_ROOT=123
 
 # Set to 1 to configure sudo
 CONFIG_SUDO=1
 
 # Wi-Fi hotspot
 # set to 0 to disable Wi-Fi Hotspot
-CONFIG_HOTSPOT=1
+CONFIG_HOTSPOT=0
 
-SSID="U.M.R-RPi3"
-PSK="raspberry"
+SSID="TP-LINK_Figo"
+PSK="123456figofigo"
 IPADDR="172.16.233.1"
 
 INSTALL_EXTRA_WIRELESS_FIRMWARE=1

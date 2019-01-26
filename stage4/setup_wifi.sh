@@ -6,7 +6,8 @@
 cat << EOF
 auto wlan0
 iface wlan0 inet dhcp
-    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+	wpa-ssid TP-LINK_Figo
+	wpa-psk  123456figofigo
 
 EOF
 ) > $ROOT_PATH/etc/network/interfaces.d/wlan0

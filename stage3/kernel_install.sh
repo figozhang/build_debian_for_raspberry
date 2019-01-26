@@ -8,5 +8,6 @@ cp -a $KERNEL_DIST_PATH/overlays $BOOT_PATH/
 
 echo "Copying kernel8.img..."
 cp -v $KERNEL_DIST_PATH/kernel8.img $BOOT_PATH/
+cp -v $KERNEL_DIST_PATH/vmlinuz* $BOOT_PATH/
 
 echo "Done."
